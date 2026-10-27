@@ -287,9 +287,9 @@ Requirements:
 
 </div>
 
-<div class="custom-container warning"><p class="custom-container-title">Warning</p>
+<div class="custom-container note"><p class="custom-container-title">Note</p>
 
-**Docker works, but you need to start the container in interactive mode. Starting it in headless mode can still crash MCC.**
+**The image starts MCC with the `BasicIO-NoColor` argument: a plain-text console without colors that also works when the container runs detached. Passing your own arguments to `docker run` replaces this default, so add `BasicIO-NoColor` as the last argument yourself in that case.**
 
 </div>
 
@@ -308,16 +308,12 @@ docker build -f Docker/Dockerfile -t minecraft-console-client:latest .
 
 **Start the container using Docker:**
 
-<div class="custom-container danger"><p class="custom-container-title">Danger</p>
-
-**Because of a ConsoleInteractive issue, starting the container in headless mode can crash MCC. Start it with the interactive command below, then detach with `CTRL + P` followed by `CTRL + Q` if you want to leave it running in the background.**
-
-</div>
-
 ```bash
 # You can omit -v if you do not want a mounted volume. Keeping the volume makes it much easier to edit the TOML config stored in MinecraftClient.ini from the host.
 docker run -it -v <PATH_ON_YOUR_MACHINE_TO_MOUNT>:/opt/data minecraft-console-client:latest
 ```
+
+To start it in the background instead, use `docker run -dit` and read the output with `docker logs -f <container>`.
 
 Now you could login and the Client is running.
 

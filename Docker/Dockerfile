@@ -12,3 +12,5 @@ COPY --from=build /out/MinecraftClient /opt/mcc/MinecraftClient
 # MinecraftClient.ini and other runtime files live here; mount a volume to keep them
 WORKDIR /opt/data
 ENTRYPOINT ["/opt/mcc/MinecraftClient"]
+# Plain-text console that works without an attached terminal; passing other arguments replaces it
+CMD ["BasicIO-NoColor"]
