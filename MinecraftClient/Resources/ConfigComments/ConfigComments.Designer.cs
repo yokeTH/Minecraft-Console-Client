@@ -1231,6 +1231,61 @@ namespace MinecraftClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get through the Sonar anti-bot verification: shows map CAPTCHAs in the console so you can type the code in chat, and reconnects after Sonar&apos;s verification kick
+        ///Requires TerrainAndMovements and EntityHandling to be enabled.
+        /// </summary>
+        internal static string ChatBot_SonarVerifier {
+            get {
+                return ResourceManager.GetString("ChatBot.SonarVerifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat text that marks Sonar&apos;s CAPTCHA prompt (case-insensitive, partial match)..
+        /// </summary>
+        internal static string ChatBot_SonarVerifier_Captcha_Messages {
+            get {
+                return ResourceManager.GetString("ChatBot.SonarVerifier.Captcha_Messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kick text that marks a failed verification, for servers where MCC cannot detect Sonar&apos;s checks on its own (case-insensitive, partial match)..
+        /// </summary>
+        internal static string ChatBot_SonarVerifier_Fail_Messages {
+            get {
+                return ResourceManager.GetString("ChatBot.SonarVerifier.Fail_Messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retries after a failed verification. Sonar blacklists the IP after 2 failures by default..
+        /// </summary>
+        internal static string ChatBot_SonarVerifier_Retries {
+            get {
+                return ResourceManager.GetString("ChatBot.SonarVerifier.Retries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seconds to wait before reconnecting after Sonar&apos;s kick. Keep it above Sonar&apos;s rejoin delay (5 seconds) and the server&apos;s connection throttle (4 seconds on Bukkit/Paper) defaults..
+        /// </summary>
+        internal static string ChatBot_SonarVerifier_Reconnect_Delay {
+            get {
+                return ResourceManager.GetString("ChatBot.SonarVerifier.Reconnect_Delay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kick text that means the verification passed. Other kicks during Sonar verification count against Retries (case-insensitive, partial match)..
+        /// </summary>
+        internal static string ChatBot_SonarVerifier_Success_Messages {
+            get {
+                return ResourceManager.GetString("ChatBot.SonarVerifier.Success_Messages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This bot allows you to send and receive messages and commands via a Telegram Bot DM or to receive messages in a Telegram channel.
         /// /!\ NOTE: You can&apos;t send messages and commands from a group channel, you can only send them in the bot DM, but you can get the messages from the client in a group channel.
         ///-----------------------------------------------------------

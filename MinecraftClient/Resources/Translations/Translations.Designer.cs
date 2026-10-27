@@ -1899,6 +1899,51 @@ namespace MinecraftClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sonar CAPTCHA: type the code shown on the map above in chat..
+        /// </summary>
+        internal static string bot_sonarVerifier_captcha {
+            get {
+                return ResourceManager.GetString("bot.sonarVerifier.captcha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Sonar verification retries left. Wait a few minutes before reconnecting, or Sonar may blacklist your IP..
+        /// </summary>
+        internal static string bot_sonarVerifier_giving_up {
+            get {
+                return ResourceManager.GetString("bot.sonarVerifier.giving_up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sonar verification needs TerrainAndMovements and EntityHandling enabled in [Main.Advanced]..
+        /// </summary>
+        internal static string bot_sonarVerifier_needs_movement {
+            get {
+                return ResourceManager.GetString("bot.sonarVerifier.needs_movement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sonar verification passed, reconnecting in {0} seconds....
+        /// </summary>
+        internal static string bot_sonarVerifier_passed {
+            get {
+                return ResourceManager.GetString("bot.sonarVerifier.passed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kicked during Sonar verification, reconnecting in {0} seconds ({1} retries left)....
+        /// </summary>
+        internal static string bot_sonarVerifier_retry {
+            get {
+                return ResourceManager.GetString("bot.sonarVerifier.retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sending message to Telegram was canceled due an error occuring. For more info enable Debug..
         /// </summary>
         internal static string bot_TelegramBridge_canceled_sending {
@@ -2356,6 +2401,15 @@ namespace MinecraftClient {
         internal static string botname_ScriptScheduler {
             get {
                 return ResourceManager.GetString("botname.ScriptScheduler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SonarVerifier.
+        /// </summary>
+        internal static string botname_SonarVerifier {
+            get {
+                return ResourceManager.GetString("botname.SonarVerifier", resourceCulture);
             }
         }
         

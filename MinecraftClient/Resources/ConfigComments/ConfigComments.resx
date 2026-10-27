@@ -517,6 +517,25 @@ Each MCC instance uses its own temporary replay cache so multiple clients can re
     <value>Schedule commands and scripts to launch on various events such as server join, date/time or time interval
 See https://mccteam.github.io/g/bots/#script-scheduler for more info</value>
   </data>
+  <data name="ChatBot.SonarVerifier" xml:space="preserve">
+    <value>Get through the Sonar anti-bot verification: shows map CAPTCHAs in the console so you can type the code in chat, and reconnects after Sonar's verification kick
+Requires TerrainAndMovements and EntityHandling to be enabled</value>
+  </data>
+  <data name="ChatBot.SonarVerifier.Captcha_Messages" xml:space="preserve">
+    <value>Chat text that marks Sonar's CAPTCHA prompt (case-insensitive, partial match).</value>
+  </data>
+  <data name="ChatBot.SonarVerifier.Fail_Messages" xml:space="preserve">
+    <value>Kick text that marks a failed verification, for servers where MCC cannot detect Sonar's checks on its own (case-insensitive, partial match).</value>
+  </data>
+  <data name="ChatBot.SonarVerifier.Retries" xml:space="preserve">
+    <value>Retries after a failed verification. Sonar blacklists the IP after 2 failures by default.</value>
+  </data>
+  <data name="ChatBot.SonarVerifier.Reconnect_Delay" xml:space="preserve">
+    <value>Seconds to wait before reconnecting after Sonar's kick. Keep it above Sonar's rejoin delay (5 seconds) and the server's connection throttle (4 seconds on Bukkit/Paper) defaults.</value>
+  </data>
+  <data name="ChatBot.SonarVerifier.Success_Messages" xml:space="preserve">
+    <value>Kick text that means the verification passed. Other kicks during Sonar verification count against Retries (case-insensitive, partial match).</value>
+  </data>
   <data name="ChatBot.TelegramBridge" xml:space="preserve">
     <value>This bot allows you to send and receive messages and commands via a Telegram Bot DM or to receive messages in a Telegram channel.
 /!\ NOTE: You can't send messages and commands from a group channel, you can only send them in the bot DM, but you can get the messages from the client in a group channel.

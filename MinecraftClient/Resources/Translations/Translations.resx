@@ -738,6 +738,21 @@ cooldown: {6}</value>
  timeinterval: {5}
  action: {6}</value>
   </data>
+  <data name="bot.sonarVerifier.captcha" xml:space="preserve">
+    <value>Sonar CAPTCHA: type the code shown on the map above in chat.</value>
+  </data>
+  <data name="bot.sonarVerifier.giving_up" xml:space="preserve">
+    <value>No Sonar verification retries left. Wait a few minutes before reconnecting, or Sonar may blacklist your IP.</value>
+  </data>
+  <data name="bot.sonarVerifier.needs_movement" xml:space="preserve">
+    <value>Sonar verification needs TerrainAndMovements and EntityHandling enabled in [Main.Advanced].</value>
+  </data>
+  <data name="bot.sonarVerifier.passed" xml:space="preserve">
+    <value>Sonar verification passed, reconnecting in {0} seconds...</value>
+  </data>
+  <data name="bot.sonarVerifier.retry" xml:space="preserve">
+    <value>Kicked during Sonar verification, reconnecting in {0} seconds ({1} retries left)...</value>
+  </data>
   <data name="bot.TelegramBridge.canceled_sending" xml:space="preserve">
     <value>Sending message to Telegram was canceled due an error occuring. For more info enable Debug.</value>
   </data>
@@ -859,6 +874,9 @@ Add the ID of this chat to "Authorized_Chat_Ids" field in the configuration file
   </data>
   <data name="botname.ScriptScheduler" xml:space="preserve">
     <value>ScriptScheduler</value>
+  </data>
+  <data name="botname.SonarVerifier" xml:space="preserve">
+    <value>SonarVerifier</value>
   </data>
   <data name="botname.TelegramBridge" xml:space="preserve">
     <value>TelegramBridge</value>

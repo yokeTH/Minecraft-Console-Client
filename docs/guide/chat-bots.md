@@ -49,6 +49,7 @@ redirectFrom:
   - [Remote Control](#remote-control)
   - [Replay Capture](#replay-capture)
   - [Script Scheduler](#script-scheduler)
+  - [Sonar Verifier](#sonar-verifier)
   - [Telegram Bridge](#telegram-bridge)
   - [Items Collector](#items-collector)
 
@@ -3274,6 +3275,92 @@ redirectFrom:
       Trigger_On_Interval = { Enable = false, MinTime = 1.0, MaxTime = 10.0 }
       Action = "send /login pass"
   ```
+
+  </details>
+
+## Sonar Verifier
+
+- **Description:**
+
+  Get through the [Sonar](https://github.com/jonesdevelopment/sonar) anti-bot verification.
+
+  Sonar checks every new player in a limbo world (gravity, collision, vehicle and protocol checks, plus an optional map CAPTCHA), then kicks the player whether the check passed or failed. A player that passed can join on the next connection.
+
+  MCC passes the automatic checks on its own when `TerrainAndMovements` and `EntityHandling` are enabled in `[Main.Advanced]`. This bot adds the parts that need a human or a reconnect:
+
+  - When Sonar asks for the CAPTCHA, the bot draws the map in the console. Type the code you see as a normal chat message.
+  - When Sonar kicks after its checks, the bot reconnects after `Reconnect_Delay` seconds. A kick without a known success message counts against `Retries`.
+
+  The bot recognises Sonar's checks by the vehicles Sonar spawns far above the world, so it also works on servers that changed or translated Sonar's messages.
+
+- **Settings:**
+
+  **Section:** **`ChatBot.SonarVerifier`**
+
+  <details>
+  <summary>All settings</summary>
+
+  #### `Enabled`
+
+  - **Description:**
+
+    This setting specifies if the Sonar Verifier Chat Bot is enabled.
+
+  - **Available values:** `true` and `false`.
+
+  - **Type:** `boolean`
+
+  - **Default:** `false`
+
+  #### `Retries`
+
+  - **Description:**
+
+    Number of reconnect attempts after a failed verification. Sonar blacklists the IP address for a few minutes after 2 failures by default, so keep this low.
+
+  - **Type:** `integer`
+
+  - **Default:** `1`
+
+  #### `Reconnect_Delay`
+
+  - **Description:**
+
+    Seconds to wait before reconnecting after Sonar's kick. Keep it above Sonar's rejoin delay (5 seconds by default), or Sonar answers with "You reconnected too fast", and above the server's connection throttle (4 seconds by default on Bukkit and Paper).
+
+  - **Type:** `integer`
+
+  - **Default:** `6`
+
+  #### `Captcha_Messages`
+
+  - **Description:**
+
+    Chat text that marks Sonar's CAPTCHA prompt. The bot already shows the CAPTCHA map when it detects Sonar's checks, so this text is only a fallback for servers where it cannot. Matching is case-insensitive and partial.
+
+  - **Type:** `array of strings`
+
+  - **Default:** `[ "enter the text in chat that is displayed on the map", ]`
+
+  #### `Success_Messages`
+
+  - **Description:**
+
+    Kick text that means the verification passed. Other kicks during Sonar's checks count against `Retries`. Matching is case-insensitive and partial.
+
+  - **Type:** `array of strings`
+
+  - **Default:** `[ "successfully passed the verification", ]`
+
+  #### `Fail_Messages`
+
+  - **Description:**
+
+    Kick text that marks a failed verification. Only needed on servers where the bot cannot detect Sonar's checks on its own, for example when Sonar's vehicle check is turned off. Matching is case-insensitive and partial.
+
+  - **Type:** `array of strings`
+
+  - **Default:** `[ "failed the bot verification", "reconnected too fast", ]`
 
   </details>
 

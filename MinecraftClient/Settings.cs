@@ -1942,6 +1942,13 @@ namespace MinecraftClient
                         ChatBots.McpServer.Config.OnSettingUpdate();
                     }
                 }
+
+                [TomlPrecedingComment("$ChatBot.SonarVerifier$")]
+                public ChatBots.SonarVerifier.Configs SonarVerifier
+                {
+                    get { return ChatBots.SonarVerifier.Config; }
+                    set { ChatBots.SonarVerifier.Config = value; ChatBots.SonarVerifier.Config.OnSettingUpdate(); }
+                }
             }
         }
 

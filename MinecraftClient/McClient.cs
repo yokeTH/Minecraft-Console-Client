@@ -623,6 +623,7 @@ namespace MinecraftClient
             if (Config.ChatBot.ItemsCollector.Enabled) { BotLoad(new ItemsCollector()); }
             if (Config.ChatBot.DiscordRpc.Enabled) { BotLoad(new DiscordRpc()); }
             if (Config.ChatBot.McpServer.Enabled) { BotLoad(new McpServer()); }
+            if (Config.ChatBot.SonarVerifier.Enabled) { BotLoad(new SonarVerifier()); }
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MCC_FILE_INPUT")))
                 BotLoad(new FileInputBot());
         }

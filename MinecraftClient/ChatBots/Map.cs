@@ -354,7 +354,7 @@ namespace MinecraftClient.ChatBots
             }
         }
 
-        private static void RenderInTui(McMap map)
+        internal static void RenderInTui(McMap map)
         {
             var view = TuiConsoleBackend.Instance?.GetView();
             if (view is null)
@@ -372,7 +372,7 @@ namespace MinecraftClient.ChatBots
             });
         }
 
-        private static void RenderInConsole(McMap map)
+        internal static void RenderInConsole(McMap map)
         {
             StringBuilder sb = new();
             int safeBufWidth, safeBufHeight;
