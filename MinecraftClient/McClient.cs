@@ -83,6 +83,10 @@ namespace MinecraftClient
         private readonly MovementInput physicsInput = new();
         private bool physicsInitialized = false;
         private Location? pathTarget; // Current waypoint for physics-driven pathfinding
+        private int? vehicleEntityId; // Vehicle the player is riding
+        private bool controlsVehicle;
+        private Location vehicleLocation;
+        private double boatVelocityY;
         public enum MovementType { Sneak, Walk, Sprint }
         private int sequenceId; // User for player block synchronization (Aka. digging, placing blocks, etc..)
         private bool CanSendMessage = false;
@@ -114,6 +118,7 @@ namespace MinecraftClient
         private int playerLevel;
         private int playerTotalExperience;
         private byte CurrentSlot = 0;
+        private byte lastSentSlot = 0;
 
         // player effects
         private readonly Dictionary<Effects, EffectData> playerEffects = new();
@@ -684,7 +689,14 @@ namespace MinecraftClient
                 TrySendMessageToServer();
             }
 
-            if (terrainAndMovementsEnabled && locationReceived)
+            // Vanilla confirms server-driven hotbar changes on the next tick.
+            if (CurrentSlot != lastSentSlot)
+            {
+                lastSentSlot = CurrentSlot;
+                handler.SendHeldItemChange(CurrentSlot);
+            }
+
+            if (terrainAndMovementsEnabled && locationReceived && !TickVehicle())
             {
                 lock (locationLock)
                 {
@@ -780,6 +792,71 @@ namespace MinecraftClient
                         DoAnimation((int)Hand.MainHand);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Run the vanilla passenger tick instead of player physics while riding a known vehicle.
+        /// </summary>
+        /// <returns>TRUE if the player is riding a known vehicle</returns>
+        private bool TickVehicle()
+        {
+            if (vehicleEntityId is not int vehicleId || !entities.TryGetValue(vehicleId, out Entity? vehicle))
+                return false;
+
+            lock (locationLock)
+            {
+                bool controlsBoat = controlsVehicle && vehicle.Type.IsBoat();
+                if (controlsBoat)
+                    TickBoat();
+                else
+                    vehicleLocation = vehicle.Location;
+
+                // Rider stands at the vehicle seat minus the player's vehicle attachment (0.6).
+                double seatHeight = vehicle.Type is EntityType.BambooRaft or EntityType.BambooChestRaft ? 0.5 : 0.1875;
+                location = new Location(vehicleLocation.X, vehicleLocation.Y + seatHeight - 0.6, vehicleLocation.Z);
+
+                playerYaw = _yaw ?? playerYaw;
+                playerPitch = _pitch ?? playerPitch;
+                handler.SendVehicleTick(playerYaw, playerPitch, playerPhysics.OnGround, playerPhysics.HorizontalCollision,
+                    controlsBoat ? vehicleLocation : null, vehicle.Yaw);
+                _yaw = null;
+                _pitch = null;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Vanilla AbstractBoat movement outside water: gravity, then collide and move. Boats in water are held still.
+        /// </summary>
+        private void TickBoat()
+        {
+            if (world.GetBlock(vehicleLocation).Type == Material.Water
+                || world.GetBlock(new Location(vehicleLocation.X, vehicleLocation.Y - 0.001, vehicleLocation.Z)).Type == Material.Water)
+            {
+                boatVelocityY = 0;
+                return;
+            }
+
+            boatVelocityY -= 0.04;
+            Aabb box = Aabb.OfSize(vehicleLocation.X, vehicleLocation.Y, vehicleLocation.Z, 1.375, 0.5625);
+            Vec3d moved = CollisionDetector.Collide(world, box, new Vec3d(0, boatVelocityY, 0), false, 0);
+            if (moved.Y != boatVelocityY)
+                boatVelocityY = 0;
+            vehicleLocation = new Location(vehicleLocation.X, vehicleLocation.Y + moved.Y, vehicleLocation.Z);
+        }
+
+        /// <summary>
+        /// Leave the current vehicle, keeping the riding position with zero velocity like vanilla.
+        /// </summary>
+        private void Dismount()
+        {
+            vehicleEntityId = null;
+            lock (locationLock)
+            {
+                if (physicsInitialized)
+                    playerPhysics.Teleport(location.X, location.Y, location.Z);
             }
         }
 
@@ -3245,6 +3322,7 @@ namespace MinecraftClient
                 return InvokeOnMainThread(() => ChangeSlot(slot));
 
             CurrentSlot = Convert.ToByte(slot);
+            lastSentSlot = CurrentSlot;
             return handler.SendHeldItemChange(slot);
         }
 
@@ -3496,8 +3574,9 @@ namespace MinecraftClient
             else
                 SetCanSendMessage(false);
 
+            // 1.20.2+ sends the brand during configuration instead.
             string? bandString = Config.Main.Advanced.BrandInfo.ToBrandString();
-            if (!String.IsNullOrWhiteSpace(bandString))
+            if (protocolversion < Protocol18Handler.MC_1_20_2_Version && !String.IsNullOrWhiteSpace(bandString))
                 handler.SendBrandInfo(bandString.Trim());
 
             // 1.20.2+ expects ClientInformation during configuration; older servers still want it here.
@@ -3549,6 +3628,7 @@ namespace MinecraftClient
             }
 
             entities.Clear();
+            vehicleEntityId = null;
             ClearKnownSigns();
             ClearInventories();
             DispatchBotEvent(bot => bot.OnRespawn());
@@ -4367,6 +4447,9 @@ namespace MinecraftClient
         /// </summary>
         public void OnDestroyEntities(int[] Entities)
         {
+            if (vehicleEntityId is int vehicleId && Entities.Contains(vehicleId))
+                Dismount();
+
             foreach (int a in Entities)
             {
                 if (entities.TryGetValue(a, out Entity? entity))
@@ -4375,6 +4458,24 @@ namespace MinecraftClient
                     entities.Remove(a);
                 }
             }
+        }
+
+        public void OnSetPassengers(int vehicleId, int[] passengers)
+        {
+            int seat = Array.IndexOf(passengers, playerEntityID);
+            if (seat >= 0)
+            {
+                if (vehicleEntityId != vehicleId && entities.TryGetValue(vehicleId, out Entity? vehicle))
+                {
+                    vehicleLocation = vehicle.Location;
+                    boatVelocityY = 0;
+                }
+
+                vehicleEntityId = vehicleId;
+                controlsVehicle = seat == 0;
+            }
+            else if (vehicleEntityId == vehicleId)
+                Dismount();
         }
 
         /// <summary>
@@ -4651,6 +4752,9 @@ namespace MinecraftClient
         /// <param name="slot"> item slot</param>
         public void OnHeldItemChange(byte slot)
         {
+            if (slot > 8)
+                return;
+
             CurrentSlot = slot;
             DispatchBotEvent(bot => bot.OnHeldItemChange(slot));
         }
@@ -4889,6 +4993,10 @@ namespace MinecraftClient
         /// <param name="animation">0 = LMB, 1 = RMB (RMB Corrent not work)</param>
         public void OnEntityAnimation(int entityID, byte animation)
         {
+            // Vanilla echoes a server-triggered swing of the local player.
+            if (entityID == playerEntityID && animation is 0 or 3)
+                handler.SendAnimation(animation == 0 ? (int)Hand.MainHand : (int)Hand.OffHand, playerEntityID);
+
             if (entities.ContainsKey(entityID))
             {
                 Entity entity = entities[entityID];

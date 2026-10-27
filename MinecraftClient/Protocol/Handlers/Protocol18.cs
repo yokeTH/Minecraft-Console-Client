@@ -316,6 +316,8 @@ namespace MinecraftClient.Protocol.Handlers
                     while (elapsedMilliseconds >= nextUpdateDue)
                     {
                         handler.OnUpdate();
+                        if (protocolVersion >= MC_1_21_2_Version && currentState == CurrentState.Play)
+                            SendClientTickEnd();
                         nextUpdateDue += ClientTickIntervalMilliseconds;
                         elapsedMilliseconds = stopWatch.ElapsedMilliseconds;
                     }
@@ -1591,15 +1593,22 @@ namespace MinecraftClient.Protocol.Handlers
                                 location.X = (locMask & 1 << 0) != 0 ? currentLocation.X + location.X : location.X;
                                 location.Y = (locMask & 1 << 1) != 0 ? currentLocation.Y + location.Y : location.Y;
                                 location.Z = (locMask & 1 << 2) != 0 ? currentLocation.Z + location.Z : location.Z;
+                                yaw = (locMask & 1 << 3) != 0 ? LastYaw + yaw : yaw;
+                                pitch = (locMask & 1 << 4) != 0 ? LastPitch + pitch : pitch;
                             }
                         }
 
-                        if (teleportId >= 0)
+                        if (protocolVersion >= MC_1_9_Version)
                         {
                             LastYaw = yaw;
                             LastPitch = pitch;
                             handler.UpdateLocation(location, yaw, pitch);
+                            // Vanilla answers every teleport with a confirm and a PosRot; 1.21.2-1.21.3 send the PosRot first.
+                            if (protocolVersion == MC_1_21_2_Version)
+                                SendTeleportPositionRotation(location, yaw, pitch);
                             SendPacket(PacketTypesOut.TeleportConfirm, DataTypes.GetVarInt(teleportId));
+                            if (protocolVersion != MC_1_21_2_Version)
+                                SendTeleportPositionRotation(location, yaw, pitch);
 
                             if (Config.Main.Advanced.TemporaryFixBadpacket)
                             {
@@ -1614,6 +1623,7 @@ namespace MinecraftClient.Protocol.Handlers
                             handler.UpdateLocation(location, yaw, pitch);
                             LastYaw = yaw;
                             LastPitch = pitch;
+                            SendTeleportPositionRotation(location, yaw, pitch);
                         }
 
                         if (protocolVersion is >= MC_1_17_Version and < MC_1_19_4_Version)
@@ -2677,6 +2687,17 @@ namespace MinecraftClient.Protocol.Handlers
                     }
 
                     break;
+                case PacketTypesIn.SetPassengers:
+                    {
+                        var vehicleId = dataTypes.ReadNextVarInt(packetData);
+                        var passengers = new int[dataTypes.ReadNextVarInt(packetData)];
+                        for (var i = 0; i < passengers.Length; i++)
+                            passengers[i] = dataTypes.ReadNextVarInt(packetData);
+
+                        handler.OnSetPassengers(vehicleId, passengers);
+                    }
+
+                    break;
                 case PacketTypesIn.EntityPosition:
                     if (handler.GetEntityHandlingEnabled())
                     {
@@ -3360,7 +3381,6 @@ namespace MinecraftClient.Protocol.Handlers
 
                     break;
                 case PacketTypesIn.EntityAnimation:
-                    if (handler.GetEntityHandlingEnabled())
                     {
                         var playerId = dataTypes.ReadNextVarInt(packetData);
                         var animation = dataTypes.ReadNextByte(packetData);
@@ -4519,6 +4539,7 @@ namespace MinecraftClient.Protocol.Handlers
                             {
                                 // Hypixel and other 1.20.2+ servers stay in configuration until ClientInformation is sent.
                                 SendPacket(0x03, new List<byte>(), "LoginAcknowledged");
+                                SendConfiguredBrandInfo();
                                 SendConfiguredClientSettings();
                             }
 
@@ -4671,6 +4692,7 @@ namespace MinecraftClient.Protocol.Handlers
                             {
                                 // Hypixel and other 1.20.2+ servers stay in configuration until ClientInformation is sent.
                                 SendPacket(0x03, new List<byte>(), "LoginAcknowledged");
+                                SendConfiguredBrandInfo();
                                 SendConfiguredClientSettings();
                             }
 
@@ -5444,6 +5466,33 @@ namespace MinecraftClient.Protocol.Handlers
             return false;
         }
 
+        /// <summary>
+        /// Tell the server the client tick ended, as vanilla does every tick since 1.21.2
+        /// </summary>
+        private void SendClientTickEnd()
+        {
+            try
+            {
+                SendPacket(PacketTypesOut.ClientTickEnd, new List<byte>());
+            }
+            catch (SocketException)
+            {
+            }
+            catch (System.IO.IOException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+        }
+
+        private void SendConfiguredBrandInfo()
+        {
+            var brand = Config.Main.Advanced.BrandInfo.ToBrandString();
+            if (!string.IsNullOrWhiteSpace(brand))
+                SendBrandInfo(brand.Trim());
+        }
+
         private bool SendConfiguredClientSettings()
         {
             if (!Config.MCSettings.Enabled)
@@ -5470,6 +5519,69 @@ namespace MinecraftClient.Protocol.Handlers
         /// <param name="yaw">Optional new yaw for updating player look</param>
         /// <param name="pitch">Optional new pitch for updating player look</param>
         /// <returns>True if the location update was successfully sent</returns>
+        /// <summary>
+        /// Send the PosRot that vanilla sends right after a server teleport, without touching movement state
+        /// </summary>
+        private void SendTeleportPositionRotation(Location location, float yaw, float pitch)
+        {
+            if (!handler.GetTerrainEnabled())
+                return;
+
+            SendPacket(PacketTypesOut.PlayerPositionAndRotation, dataTypes.ConcatBytes(
+                dataTypes.GetDouble(location.X),
+                dataTypes.GetDouble(location.Y),
+                protocolVersion < MC_1_8_Version
+                    ? dataTypes.GetDouble(location.Y + 1.62)
+                    : [],
+                dataTypes.GetDouble(location.Z),
+                dataTypes.GetFloat(yaw),
+                dataTypes.GetFloat(pitch),
+                [0]));
+        }
+
+        public bool SendVehicleTick(float yaw, float pitch, bool onGround, bool horizontalCollision, Location? boatLocation, float boatYaw)
+        {
+            try
+            {
+                // Boat tick (paddle) runs before the passenger tick (rotation, input, vehicle move).
+                if (boatLocation is not null)
+                    SendPacket(PacketTypesOut.SteerBoat, [0, 0]);
+
+                byte flags = (byte)(onGround ? 1 : 0);
+                if (protocolVersion >= MC_1_21_5_Version && horizontalCollision)
+                    flags |= 0x2;
+                SendPacket(PacketTypesOut.PlayerRotation,
+                    dataTypes.ConcatBytes(dataTypes.GetFloat(yaw), dataTypes.GetFloat(pitch), [flags]));
+
+                if (protocolVersion < MC_1_21_2_Version)
+                    SendPacket(PacketTypesOut.SteerVehicle,
+                        dataTypes.ConcatBytes(dataTypes.GetFloat(0), dataTypes.GetFloat(0), [0]));
+
+                if (boatLocation is { } boat)
+                    SendPacket(PacketTypesOut.VehicleMove, dataTypes.ConcatBytes(
+                        dataTypes.GetDouble(boat.X),
+                        dataTypes.GetDouble(boat.Y),
+                        dataTypes.GetDouble(boat.Z),
+                        dataTypes.GetFloat(boatYaw),
+                        dataTypes.GetFloat(0),
+                        protocolVersion >= MC_1_21_4_Version ? [0] : []));
+
+                return true;
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
+            catch (System.IO.IOException)
+            {
+                return false;
+            }
+            catch (ObjectDisposedException)
+            {
+                return false;
+            }
+        }
+
         public bool SendLocationUpdate(Location location, bool onGround, bool horizontalCollision, float? yaw, float? pitch)
         {
             return SendLocationUpdate(location, onGround, horizontalCollision, yaw, pitch, true);
@@ -5665,6 +5777,10 @@ namespace MinecraftClient.Protocol.Handlers
 
                     SendPacket(PacketTypesOut.PluginMessage,
                         dataTypes.ConcatBytes(dataTypes.GetString(channel), length, data));
+                }
+                else if (currentState == CurrentState.Configuration)
+                {
+                    SendPacket(ConfigurationPacketTypesOut.PluginMessage, dataTypes.ConcatBytes(dataTypes.GetString(channel), data));
                 }
                 else
                 {

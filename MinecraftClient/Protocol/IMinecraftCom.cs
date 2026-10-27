@@ -118,6 +118,18 @@ namespace MinecraftClient.Protocol
         bool SendHeldItemChange(short slot);
 
         /// <summary>
+        /// Send the packets vanilla sends each tick while riding a vehicle.
+        /// </summary>
+        /// <param name="yaw">Player yaw</param>
+        /// <param name="pitch">Player pitch</param>
+        /// <param name="onGround">Player on-ground state</param>
+        /// <param name="horizontalCollision">Player horizontal collision state</param>
+        /// <param name="boatLocation">Location of the boat controlled by the player, or null when not controlling one</param>
+        /// <param name="boatYaw">Yaw of the controlled boat</param>
+        /// <returns>True if packets were successfully sent</returns>
+        bool SendVehicleTick(float yaw, float pitch, bool onGround, bool horizontalCollision, Location? boatLocation, float boatYaw);
+
+        /// <summary>
         /// Send an entity interaction packet to the server.
         /// </summary>
         /// <param name="EntityID">Entity ID to interact with</param>

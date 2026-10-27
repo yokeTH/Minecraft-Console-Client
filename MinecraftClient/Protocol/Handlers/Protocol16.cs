@@ -843,6 +843,11 @@ namespace MinecraftClient.Protocol.Handlers
             return false; //Currently not implemented
         }
 
+        public bool SendVehicleTick(float yaw, float pitch, bool onGround, bool horizontalCollision, Location? boatLocation, float boatYaw)
+        {
+            return false; //Currently not implemented
+        }
+
         public bool SendPlayerDigging(int status, Location location, Direction face, int sequenceId)
         {
             return false; //Currently not implemented

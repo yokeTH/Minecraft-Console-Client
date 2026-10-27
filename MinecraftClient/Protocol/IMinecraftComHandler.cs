@@ -288,6 +288,13 @@ namespace MinecraftClient.Protocol
         void OnDestroyEntities(int[] EntityID);
 
         /// <summary>
+        /// Called when the passengers of a vehicle change
+        /// </summary>
+        /// <param name="vehicleId">Vehicle entity ID</param>
+        /// <param name="passengers">Passenger entity IDs, controlling passenger first</param>
+        void OnSetPassengers(int vehicleId, int[] passengers);
+
+        /// <summary>
         /// Called when an entity moved by coordinate offset
         /// </summary>
         /// <param name="EntityID">Entity ID</param>

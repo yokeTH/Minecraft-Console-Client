@@ -120,5 +120,24 @@ namespace MinecraftClient.Mapping
             }
             ;
         }
+
+        /// <summary>
+        /// Return TRUE if the Entity is a boat or raft
+        /// </summary>
+        /// <returns>TRUE if boat</returns>
+        public static bool IsBoat(this EntityType e)
+        {
+            return e is EntityType.Boat or EntityType.ChestBoat
+                or EntityType.AcaciaBoat or EntityType.AcaciaChestBoat
+                or EntityType.BambooRaft or EntityType.BambooChestRaft
+                or EntityType.BirchBoat or EntityType.BirchChestBoat
+                or EntityType.CherryBoat or EntityType.CherryChestBoat
+                or EntityType.DarkOakBoat or EntityType.DarkOakChestBoat
+                or EntityType.JungleBoat or EntityType.JungleChestBoat
+                or EntityType.MangroveBoat or EntityType.MangroveChestBoat
+                or EntityType.OakBoat or EntityType.OakChestBoat
+                or EntityType.PaleOakBoat or EntityType.PaleOakChestBoat
+                or EntityType.SpruceBoat or EntityType.SpruceChestBoat;
+        }
     }
 }
