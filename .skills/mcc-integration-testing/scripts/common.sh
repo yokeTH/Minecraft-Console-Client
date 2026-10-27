@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 sed_in_place() {
-    if [[ "$(uname)" == "Darwin" ]]; then
+    if ! sed --version >/dev/null 2>&1; then
         sed -i '' "$@"
     else
         sed -i "$@"

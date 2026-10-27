@@ -152,7 +152,7 @@ echo "[2/4] Preparing config..."
 bash "$PREPARE_CFG_SCRIPT" "$CFG" "${VERSION%-Vanilla}" "$USERNAME" >/dev/null
 
 if [[ "$MODE" == "tui" ]]; then
-    if [[ "$(uname)" == "Darwin" ]]; then
+    if ! sed --version >/dev/null 2>&1; then
         sed -i '' 's/ConsoleMode = "classic"/ConsoleMode = "tui"/' "$CFG"
     else
         sed -i 's/ConsoleMode = "classic"/ConsoleMode = "tui"/' "$CFG"
@@ -160,7 +160,7 @@ if [[ "$MODE" == "tui" ]]; then
 fi
 
 if $DEBUG_ON; then
-    if [[ "$(uname)" == "Darwin" ]]; then
+    if ! sed --version >/dev/null 2>&1; then
         sed -i '' 's/DebugMessages = false/DebugMessages = true/' "$CFG"
     else
         sed -i 's/DebugMessages = false/DebugMessages = true/' "$CFG"
