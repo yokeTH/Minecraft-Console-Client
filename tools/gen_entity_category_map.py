@@ -135,6 +135,9 @@ def main():
 
     root = Path(sys.argv[1])
     entity_type_java = root / "net/minecraft/world/entity/EntityType.java"
+    # 26.3+ declares the entity types in EntityTypes.java
+    if (root / "net/minecraft/world/entity/EntityTypes.java").exists():
+        entity_type_java = root / "net/minecraft/world/entity/EntityTypes.java"
 
     if not entity_type_java.exists():
         print(f"Error: {entity_type_java} not found")

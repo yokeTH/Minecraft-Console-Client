@@ -11,6 +11,9 @@ public class DeathProtectionComponent(DataTypes dataTypes, ItemPalette itemPalet
 {
     public List<ConsumeEffectData> DeathEffects { get; set; } = new();
 
+    // 26.3+ teleport_randomly adds a directionalParticles bool after the diameter.
+    protected virtual bool TeleportHasDirectionalParticles => false;
+
     public override void Parse(Queue<byte> data)
     {
         var effectCount = DataTypes.ReadNextVarInt(data);
@@ -41,6 +44,8 @@ public class DeathProtectionComponent(DataTypes dataTypes, ItemPalette itemPalet
                 break;
             case 3: // teleport_randomly
                 payload.AddRange(DataTypes.GetFloat(DataTypes.ReadNextFloat(data)));
+                if (TeleportHasDirectionalParticles)
+                    payload.AddRange(DataTypes.GetBool(DataTypes.ReadNextBool(data)));
                 break;
             case 4: // play_sound
                 var sound = (SoundEventSubComponent)SubComponentRegistry.ParseSubComponent(SubComponents.SoundEvent, data);

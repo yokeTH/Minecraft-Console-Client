@@ -1,5 +1,5 @@
 {
-  "version": "26.2",
+  "version": "26.3",
   "colors": {
     "AcaciaDoor": [
       216,
@@ -346,6 +346,11 @@
       25,
       25
     ],
+    "BlackConcreteSlab": [
+      25,
+      25,
+      25
+    ],
     "BlackGlazedTerracotta": [
       25,
       25,
@@ -362,6 +367,11 @@
       72
     ],
     "BlackWool": [
+      25,
+      25,
+      25
+    ],
+    "BlackWoolSlab": [
       25,
       25,
       25
@@ -396,6 +406,11 @@
       76,
       178
     ],
+    "BlueConcreteSlab": [
+      51,
+      76,
+      178
+    ],
     "BlueGlazedTerracotta": [
       51,
       76,
@@ -422,6 +437,11 @@
       72
     ],
     "BlueWool": [
+      51,
+      76,
+      178
+    ],
+    "BlueWoolSlab": [
       51,
       76,
       178
@@ -491,6 +511,11 @@
       76,
       51
     ],
+    "BrownConcreteSlab": [
+      102,
+      76,
+      51
+    ],
     "BrownGlazedTerracotta": [
       102,
       76,
@@ -517,6 +542,11 @@
       72
     ],
     "BrownWool": [
+      102,
+      76,
+      51
+    ],
+    "BrownWoolSlab": [
       102,
       76,
       51
@@ -1036,6 +1066,11 @@
       127,
       153
     ],
+    "CyanConcreteSlab": [
+      76,
+      127,
+      153
+    ],
     "CyanGlazedTerracotta": [
       76,
       127,
@@ -1052,6 +1087,11 @@
       72
     ],
     "CyanWool": [
+      76,
+      127,
+      153
+    ],
+    "CyanWoolSlab": [
       76,
       127,
       153
@@ -1546,6 +1586,11 @@
       76,
       76
     ],
+    "GrayConcreteSlab": [
+      76,
+      76,
+      76
+    ],
     "GrayGlazedTerracotta": [
       76,
       76,
@@ -1562,6 +1607,11 @@
       72
     ],
     "GrayWool": [
+      76,
+      76,
+      76
+    ],
+    "GrayWoolSlab": [
       76,
       76,
       76
@@ -1586,6 +1636,11 @@
       127,
       51
     ],
+    "GreenConcreteSlab": [
+      102,
+      127,
+      51
+    ],
     "GreenGlazedTerracotta": [
       102,
       127,
@@ -1602,6 +1657,11 @@
       72
     ],
     "GreenWool": [
+      102,
+      127,
+      51
+    ],
+    "GreenWoolSlab": [
       102,
       127,
       51
@@ -1856,6 +1916,11 @@
       153,
       216
     ],
+    "LightBlueConcreteSlab": [
+      102,
+      153,
+      216
+    ],
     "LightBlueGlazedTerracotta": [
       102,
       153,
@@ -1872,6 +1937,11 @@
       72
     ],
     "LightBlueWool": [
+      102,
+      153,
+      216
+    ],
+    "LightBlueWoolSlab": [
       102,
       153,
       216
@@ -1896,6 +1966,11 @@
       153,
       153
     ],
+    "LightGrayConcreteSlab": [
+      153,
+      153,
+      153
+    ],
     "LightGrayGlazedTerracotta": [
       153,
       153,
@@ -1912,6 +1987,11 @@
       72
     ],
     "LightGrayWool": [
+      153,
+      153,
+      153
+    ],
+    "LightGrayWoolSlab": [
       153,
       153,
       153
@@ -1961,6 +2041,11 @@
       204,
       25
     ],
+    "LimeConcreteSlab": [
+      127,
+      204,
+      25
+    ],
     "LimeGlazedTerracotta": [
       127,
       204,
@@ -1977,6 +2062,11 @@
       72
     ],
     "LimeWool": [
+      127,
+      204,
+      25
+    ],
+    "LimeWoolSlab": [
       127,
       204,
       25
@@ -2011,6 +2101,11 @@
       76,
       216
     ],
+    "MagentaConcreteSlab": [
+      178,
+      76,
+      216
+    ],
     "MagentaGlazedTerracotta": [
       178,
       76,
@@ -2027,6 +2122,11 @@
       72
     ],
     "MagentaWool": [
+      178,
+      76,
+      216
+    ],
+    "MagentaWoolSlab": [
       178,
       76,
       216
@@ -2306,7 +2406,17 @@
       127,
       51
     ],
+    "OrangeConcreteSlab": [
+      216,
+      127,
+      51
+    ],
     "OrangeGlazedTerracotta": [
+      216,
+      127,
+      51
+    ],
+    "OrangePoplarLeaves": [
       216,
       127,
       51
@@ -2327,6 +2437,11 @@
       72
     ],
     "OrangeWool": [
+      216,
+      127,
+      51
+    ],
+    "OrangeWoolSlab": [
       216,
       127,
       51
@@ -2506,6 +2621,11 @@
       127,
       165
     ],
+    "PinkConcreteSlab": [
+      242,
+      127,
+      165
+    ],
     "PinkGlazedTerracotta": [
       242,
       127,
@@ -2532,6 +2652,11 @@
       72
     ],
     "PinkWool": [
+      242,
+      127,
+      165
+    ],
+    "PinkWoolSlab": [
       242,
       127,
       165
@@ -2626,6 +2751,76 @@
       229,
       51
     ],
+    "PoplarDoor": [
+      153,
+      153,
+      153
+    ],
+    "PoplarFence": [
+      153,
+      153,
+      153
+    ],
+    "PoplarFenceGate": [
+      153,
+      153,
+      153
+    ],
+    "PoplarHangingSign": [
+      153,
+      153,
+      153
+    ],
+    "PoplarPlanks": [
+      153,
+      153,
+      153
+    ],
+    "PoplarPressurePlate": [
+      153,
+      153,
+      153
+    ],
+    "PoplarSapling": [
+      167,
+      167,
+      167
+    ],
+    "PoplarShelf": [
+      153,
+      153,
+      153
+    ],
+    "PoplarSign": [
+      153,
+      153,
+      153
+    ],
+    "PoplarSlab": [
+      153,
+      153,
+      153
+    ],
+    "PoplarTrapdoor": [
+      153,
+      153,
+      153
+    ],
+    "PoplarWallHangingSign": [
+      153,
+      153,
+      153
+    ],
+    "PoplarWallSign": [
+      153,
+      153,
+      153
+    ],
+    "PoplarWood": [
+      129,
+      86,
+      49
+    ],
     "Poppy": [
       0,
       124,
@@ -2696,6 +2891,11 @@
       63,
       178
     ],
+    "PurpleConcreteSlab": [
+      127,
+      63,
+      178
+    ],
     "PurpleGlazedTerracotta": [
       127,
       63,
@@ -2712,6 +2912,11 @@
       72
     ],
     "PurpleWool": [
+      127,
+      63,
+      178
+    ],
+    "PurpleWoolSlab": [
       127,
       63,
       178
@@ -2781,6 +2986,11 @@
       51,
       51
     ],
+    "RedConcreteSlab": [
+      153,
+      51,
+      51
+    ],
     "RedGlazedTerracotta": [
       153,
       51,
@@ -2801,6 +3011,11 @@
       2,
       0
     ],
+    "RedPoplarLeaves": [
+      153,
+      51,
+      51
+    ],
     "RedSand": [
       216,
       127,
@@ -2815,6 +3030,11 @@
       216,
       127,
       51
+    ],
+    "RedShrub": [
+      189,
+      48,
+      49
     ],
     "RedTerracotta": [
       142,
@@ -2832,6 +3052,11 @@
       72
     ],
     "RedWool": [
+      153,
+      51,
+      51
+    ],
+    "RedWoolSlab": [
       153,
       51,
       51
@@ -2960,6 +3185,11 @@
       64,
       64,
       255
+    ],
+    "ShelfMushroom": [
+      186,
+      133,
+      36
     ],
     "ShortDryGrass": [
       229,
@@ -3156,6 +3386,11 @@
       112,
       112
     ],
+    "StrawBed": [
+      229,
+      229,
+      51
+    ],
     "StrippedAcaciaWood": [
       216,
       127,
@@ -3195,6 +3430,11 @@
       255,
       252,
       245
+    ],
+    "StrippedPoplarWood": [
+      153,
+      153,
+      153
     ],
     "StrippedSpruceWood": [
       129,
@@ -3561,6 +3801,11 @@
       255,
       255
     ],
+    "WhiteConcreteSlab": [
+      255,
+      255,
+      255
+    ],
     "WhiteGlazedTerracotta": [
       255,
       255,
@@ -3582,6 +3827,11 @@
       72
     ],
     "WhiteWool": [
+      255,
+      255,
+      255
+    ],
+    "WhiteWoolSlab": [
       255,
       255,
       255
@@ -3616,7 +3866,17 @@
       229,
       51
     ],
+    "YellowConcreteSlab": [
+      229,
+      229,
+      51
+    ],
     "YellowGlazedTerracotta": [
+      229,
+      229,
+      51
+    ],
+    "YellowPoplarLeaves": [
       229,
       229,
       51
@@ -3632,6 +3892,11 @@
       72
     ],
     "YellowWool": [
+      229,
+      229,
+      51
+    ],
+    "YellowWoolSlab": [
       229,
       229,
       51

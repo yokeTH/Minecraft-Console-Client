@@ -137,6 +137,7 @@ namespace MinecraftClient.Mapping
                 or EntityType.MangroveBoat or EntityType.MangroveChestBoat
                 or EntityType.OakBoat or EntityType.OakChestBoat
                 or EntityType.PaleOakBoat or EntityType.PaleOakChestBoat
+                or EntityType.PoplarBoat or EntityType.PoplarChestBoat
                 or EntityType.SpruceBoat or EntityType.SpruceChestBoat;
         }
     }

@@ -67,8 +67,40 @@ internal static class StructuredComponentCodecHelpers
         if (soundEvent is not null)
             WriteSoundEventHolder(dataTypes, bytes, soundEvent);
     }
+
+    // 26.3+ ResolvableInt: Either<Int constant, ResourceKey<context_int_provider>>
+    public static ResolvableIntData ReadResolvableInt(DataTypes dataTypes, Queue<byte> data)
+    {
+        return dataTypes.ReadNextBool(data)
+            ? new ResolvableIntData(dataTypes.ReadNextInt(data), null)
+            : new ResolvableIntData(null, dataTypes.ReadNextString(data));
+    }
+
+    public static void WriteResolvableInt(DataTypes dataTypes, List<byte> bytes, ResolvableIntData value)
+    {
+        bytes.AddRange(dataTypes.GetBool(value.Constant is not null));
+        bytes.AddRange(value.Constant is int constant ? DataTypes.GetInt(constant) : dataTypes.GetString(value.Reference ?? string.Empty));
+    }
+
+    // 26.3+ ResolvableFloat: Either<Float constant, ResourceKey<context_float_provider>>
+    public static ResolvableFloatData ReadResolvableFloat(DataTypes dataTypes, Queue<byte> data)
+    {
+        return dataTypes.ReadNextBool(data)
+            ? new ResolvableFloatData(dataTypes.ReadNextFloat(data), null)
+            : new ResolvableFloatData(null, dataTypes.ReadNextString(data));
+    }
+
+    public static void WriteResolvableFloat(DataTypes dataTypes, List<byte> bytes, ResolvableFloatData value)
+    {
+        bytes.AddRange(dataTypes.GetBool(value.Constant is not null));
+        bytes.AddRange(value.Constant is float constant ? dataTypes.GetFloat(constant) : dataTypes.GetString(value.Reference ?? string.Empty));
+    }
 }
 
 public sealed record HolderSetData(string? Tag, List<int> HolderIds);
 
 public sealed record SoundEventHolderData(int HolderId, string? SoundLocation, bool HasFixedRange, float FixedRange);
+
+public sealed record ResolvableIntData(int? Constant, string? Reference);
+
+public sealed record ResolvableFloatData(float? Constant, string? Reference);

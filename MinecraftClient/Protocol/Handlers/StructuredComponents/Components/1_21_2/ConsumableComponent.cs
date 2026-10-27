@@ -15,6 +15,9 @@ public class ConsumableComponent(DataTypes dataTypes, ItemPalette itemPalette, S
     public bool HasConsumeParticles { get; set; }
     public List<ConsumeEffectData> Effects { get; set; } = new();
 
+    // 26.3+ teleport_randomly adds a directionalParticles bool after the diameter.
+    protected virtual bool TeleportHasDirectionalParticles => false;
+
     public override void Parse(Queue<byte> data)
     {
         ConsumeSeconds = DataTypes.ReadNextFloat(data);
@@ -50,6 +53,8 @@ public class ConsumableComponent(DataTypes dataTypes, ItemPalette itemPalette, S
                 break;
             case 3: // teleport_randomly: float diameter
                 payload.AddRange(DataTypes.GetFloat(DataTypes.ReadNextFloat(data)));
+                if (TeleportHasDirectionalParticles)
+                    payload.AddRange(DataTypes.GetBool(DataTypes.ReadNextBool(data)));
                 break;
             case 4: // play_sound: Holder<SoundEvent>
                 var sound = (SoundEventSubComponent)SubComponentRegistry.ParseSubComponent(SubComponents.SoundEvent, data);

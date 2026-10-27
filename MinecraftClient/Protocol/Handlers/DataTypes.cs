@@ -1024,6 +1024,7 @@ namespace MinecraftClient.Protocol.Handlers
                             break;
                         case EntityMetaDataType.ZombieNautilusVariant: // ZombieNautilus Variant (1.21.11+)
                         case EntityMetaDataType.HumanoidArm: // Humanoid Arm (1.21.11+)
+                        case EntityMetaDataType.DyeColor: // Dye Color (26.3+)
                             value = ReadNextVarInt(cache);
                             break;
                         case EntityMetaDataType.ResolvableProfile: // ResolvableProfile (1.21.9+)

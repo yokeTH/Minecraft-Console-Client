@@ -4997,8 +4997,8 @@ namespace MinecraftClient
         /// <param name="animation">0 = LMB, 1 = RMB (RMB Corrent not work)</param>
         public void OnEntityAnimation(int entityID, byte animation)
         {
-            // Vanilla echoes a server-triggered swing of the local player.
-            if (entityID == playerEntityID && animation is 0 or 3)
+            // Vanilla before 26.3 echoes a server-triggered swing of the local player.
+            if (entityID == playerEntityID && animation is 0 or 3 && protocolversion < Protocol18Handler.MC_26_3_Version)
                 handler.SendAnimation(animation == 0 ? (int)Hand.MainHand : (int)Hand.OffHand, playerEntityID);
 
             if (entities.ContainsKey(entityID))
