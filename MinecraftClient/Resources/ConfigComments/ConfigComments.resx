@@ -229,6 +229,14 @@ Recipes.Result: the resulting item
 Recipes.Slots: All slots, counting from left to right, top to bottom. Please fill in "Null" for empty slots.
 For the naming of the items, please see: https://mccteam.github.io/r/item/#L12</value>
   </data>
+  <data name="ChatBot.AutoDialog" xml:space="preserve">
+    <value>Fill in and submit server dialogs, such as login forms, when their title matches a rule
+/!\ Values such as passwords are stored in plain text in this file</value>
+  </data>
+  <data name="ChatBot.AutoDialog.Rules" xml:space="preserve">
+    <value>Title: part of the dialog title shown by MCC (case-insensitive). Inputs: "key=value" pairs, using the input keys listed by /dialog. Click: number of the button to press.
+Each rule fills in a dialog at most once per connection, so a rejected answer is never sent again in a loop.</value>
+  </data>
   <data name="ChatBot.AutoDig" xml:space="preserve">
     <value>Auto-digging blocks.
 You need to enable Terrain Handling to use this bot

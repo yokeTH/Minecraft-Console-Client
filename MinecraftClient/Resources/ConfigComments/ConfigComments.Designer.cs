@@ -364,6 +364,26 @@ namespace MinecraftClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fill in and submit server dialogs, such as login forms, when their title matches a rule
+        ////!\ Values such as passwords are stored in plain text in this file.
+        /// </summary>
+        internal static string ChatBot_AutoDialog {
+            get {
+                return ResourceManager.GetString("ChatBot.AutoDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title: part of the dialog title shown by MCC (case-insensitive). Inputs: &quot;key=value&quot; pairs, using the input keys listed by /dialog. Click: number of the button to press.
+        ///Each rule fills in a dialog at most once per connection, so a rejected answer is never sent again in a loop..
+        /// </summary>
+        internal static string ChatBot_AutoDialog_Rules {
+            get {
+                return ResourceManager.GetString("ChatBot.AutoDialog.Rules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-digging blocks.
         ///You need to enable Terrain Handling to use this bot
         ///You can use &quot;/digbot start&quot; and &quot;/digbot stop&quot; to control the start and stop of AutoDig.

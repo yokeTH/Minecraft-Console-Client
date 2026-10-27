@@ -219,6 +219,12 @@
   <data name="bot.autoCraft.timeout" xml:space="preserve">
     <value>Action timeout! Reason: {0}</value>
   </data>
+  <data name="bot.autoDialog.repeated" xml:space="preserve">
+    <value>Dialog "{0}" was shown again, so it was not filled in a second time. Use /dialog to answer it.</value>
+  </data>
+  <data name="bot.autoDialog.submitted" xml:space="preserve">
+    <value>Filled in dialog "{0}" and clicked button {1}.</value>
+  </data>
   <data name="bot.autodig.available_cmd" xml:space="preserve">
     <value>Available commands: {0}. Use /autodig help &lt;cmd name&gt; for more information.</value>
   </data>
@@ -817,6 +823,9 @@ Add the ID of this chat to "Authorized_Chat_Ids" field in the configuration file
   </data>
   <data name="botname.AutoCraft" xml:space="preserve">
     <value>AutoCraft</value>
+  </data>
+  <data name="botname.AutoDialog" xml:space="preserve">
+    <value>AutoDialog</value>
   </data>
   <data name="botname.AutoDig" xml:space="preserve">
     <value>AutoDig</value>

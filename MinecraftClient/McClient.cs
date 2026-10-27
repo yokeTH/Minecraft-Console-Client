@@ -624,6 +624,7 @@ namespace MinecraftClient
             if (Config.ChatBot.DiscordRpc.Enabled) { BotLoad(new DiscordRpc()); }
             if (Config.ChatBot.McpServer.Enabled) { BotLoad(new McpServer()); }
             if (Config.ChatBot.SonarVerifier.Enabled) { BotLoad(new SonarVerifier()); }
+            if (Config.ChatBot.AutoDialog.Enabled) { BotLoad(new AutoDialog()); }
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("MCC_FILE_INPUT")))
                 BotLoad(new FileInputBot());
         }
@@ -3545,6 +3546,7 @@ namespace MinecraftClient
             var instance = Dialogs.Show(dialog, phase);
             if (!Tui.DialogTuiHost.TryOpen(this, instance, force: phase == DialogPhase.Configuration))
                 ConsoleIO.WriteLineFormatted(DialogFormatter.Render(instance), acceptnewlines: true);
+            DispatchBotEvent(bot => bot.OnDialogShown(instance));
         }
 
         public void OnDialogRegistryReferenceShown(int protocolId, DialogPhase phase)
@@ -3552,6 +3554,7 @@ namespace MinecraftClient
             var instance = Dialogs.ShowRegistryReference(protocolId, phase);
             if (!Tui.DialogTuiHost.TryOpen(this, instance, force: phase == DialogPhase.Configuration))
                 ConsoleIO.WriteLineFormatted(DialogFormatter.Render(instance), acceptnewlines: true);
+            DispatchBotEvent(bot => bot.OnDialogShown(instance));
         }
 
         public void OnDialogCleared()

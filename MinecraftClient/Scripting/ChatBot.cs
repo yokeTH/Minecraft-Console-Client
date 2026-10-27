@@ -9,6 +9,7 @@ using Brigadier.NET;
 using Brigadier.NET.Builder;
 using MinecraftClient.CommandHandler;
 using MinecraftClient.CommandHandler.Patch;
+using MinecraftClient.Dialogs;
 using MinecraftClient.Inventory;
 using MinecraftClient.Mapping;
 using static MinecraftClient.Settings;
@@ -335,6 +336,12 @@ namespace MinecraftClient.Scripting
         /// <param name="mapRowZ">z offset of the northernmost row</param>
         /// <param name="colors">a byte array of colors on the map</param>
         public virtual void OnMapData(int mapid, byte scale, bool trackingPosition, bool locked, List<MapIcon> icons, byte columnsUpdated, byte rowsUpdated, byte mapCoulmnX, byte mapRowZ, byte[]? colors) { }
+
+        /// <summary>
+        /// Called when the server shows a dialog, including during the configuration phase
+        /// </summary>
+        /// <param name="dialog">The dialog now shown, also available as Handler.Dialogs.Current</param>
+        public virtual void OnDialogShown(DialogInstance dialog) { }
 
         /// <summary>
         /// Called when tradeList is received from server

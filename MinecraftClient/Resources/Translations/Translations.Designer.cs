@@ -375,6 +375,24 @@ namespace MinecraftClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dialog &quot;{0}&quot; was shown again, so it was not filled in a second time. Use /dialog to answer it..
+        /// </summary>
+        internal static string bot_autoDialog_repeated {
+            get {
+                return ResourceManager.GetString("bot.autoDialog.repeated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filled in dialog &quot;{0}&quot; and clicked button {1}..
+        /// </summary>
+        internal static string bot_autoDialog_submitted {
+            get {
+                return ResourceManager.GetString("bot.autoDialog.submitted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available commands: {0}. Use /autodig help &lt;cmd name&gt; for more information..
         /// </summary>
         internal static string bot_autodig_available_cmd {
@@ -2230,6 +2248,15 @@ namespace MinecraftClient {
         internal static string botname_AutoCraft {
             get {
                 return ResourceManager.GetString("botname.AutoCraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AutoDialog.
+        /// </summary>
+        internal static string botname_AutoDialog {
+            get {
+                return ResourceManager.GetString("botname.AutoDialog", resourceCulture);
             }
         }
         

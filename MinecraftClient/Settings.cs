@@ -1949,6 +1949,13 @@ namespace MinecraftClient
                     get { return ChatBots.SonarVerifier.Config; }
                     set { ChatBots.SonarVerifier.Config = value; ChatBots.SonarVerifier.Config.OnSettingUpdate(); }
                 }
+
+                [TomlPrecedingComment("$ChatBot.AutoDialog$")]
+                public ChatBots.AutoDialog.Configs AutoDialog
+                {
+                    get { return ChatBots.AutoDialog.Config; }
+                    set { ChatBots.AutoDialog.Config = value; ChatBots.AutoDialog.Config.OnSettingUpdate(); }
+                }
             }
         }
 

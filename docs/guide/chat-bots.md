@@ -30,6 +30,7 @@ redirectFrom:
   - [Anti AFK](#anti-afk)
   - [Auto Attack](#auto-attack)
   - [Auto Craft](#auto-craft)
+  - [Auto Dialog](#auto-dialog)
   - [Auto Dig](#auto-dig)
   - [Auto Drop](#auto-drop)
   - [Auto Eat](#auto-eat)
@@ -623,6 +624,62 @@ redirectFrom:
   **Make sure to provide materials for your bot by placing them in inventory first.**
 
   </div>
+
+  </details>
+
+## Auto Dialog
+
+- **Description:**
+
+  Fill in and submit server dialogs automatically, for example the login form that some servers show before you join.
+
+  When the server shows a dialog whose title matches a rule, the bot fills in the rule's inputs and clicks its button. Type `/dialog` while a dialog is open to see its title, input keys and button numbers.
+
+  Each rule fills in a dialog at most once per connection. If the server shows the same dialog again, for example after a wrong password, the bot leaves it to you so a rejected answer is never sent in a loop.
+
+  <div class="custom-container warning"><p class="custom-container-title">Warning</p>
+
+  **Values such as passwords are stored in plain text in the configuration file.**
+
+  </div>
+
+- **Settings:**
+
+  **Section:** **`ChatBot.AutoDialog`**
+
+  <details>
+  <summary>All settings</summary>
+
+  #### `Enabled`
+
+  - **Description:**
+
+    This setting specifies if the Auto Dialog Chat Bot is enabled.
+
+  - **Available values:** `true` and `false`.
+
+  - **Type:** `boolean`
+
+  - **Default:** `false`
+
+  #### `Rules`
+
+  - **Description:**
+
+    One `[[ChatBot.AutoDialog.Rules]]` table per dialog to answer.
+
+    - `Title`: part of the dialog title shown by MCC. Matching is case-insensitive.
+    - `Inputs`: `"key=value"` strings, using the input keys listed by `/dialog`.
+    - `Click`: number of the button to press after filling in the inputs.
+
+  - **Example:**
+
+    ```toml
+    [[ChatBot.AutoDialog.Rules]]
+    Title = "Login"
+    Inputs = [ "password=your_password", ]
+    Click = 1
+    ```
 
   </details>
 
