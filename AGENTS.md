@@ -12,7 +12,7 @@
 - Publish (matches CI shape): `source tools/mcc-env.sh && mcc-publish --rid <RID>`
 - Run/debug from source: `source tools/mcc-env.sh && mcc-debug -v 1.21.11 --file-input`
 - Docs: `cd docs && npm install && npm run docs:dev` or `npm run docs:build`
-- Docker: `cd Docker && docker build -t minecraft-console-client:latest .`
+- Docker: `docker build -f Docker/Dockerfile -t minecraft-console-client:latest .` (from the repo root; the image bundles MCC built from source)
 - Tests: no dedicated test project is present in the main solution.
 - Current state: the solution builds after submodule init, but the underlying .NET build emits many analyzer and NuGet vulnerability warnings; treat them as real.
 - Server roots: `tools/` helpers look for server jars under `MinecraftOfficial/downloads/<version>/` by default, but also support an external root via the `MCC_SERVERS` environment variable.

@@ -299,11 +299,11 @@ Requirements:
 git clone https://github.com/MCCTeam/Minecraft-Console-Client.git --recursive
 ```
 
-2. Navigate to `Minecraft-Console-Client/Docker`
-3. Build the image using the following command
+2. Navigate to `Minecraft-Console-Client`
+3. Build the image using the following command. It compiles MCC from source and bundles it in the image, so nothing is downloaded when the container starts.
 
 ```bash
-docker build -t minecraft-console-client:latest .
+docker build -f Docker/Dockerfile -t minecraft-console-client:latest .
 ```
 
 **Start the container using Docker:**
