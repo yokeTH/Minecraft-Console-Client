@@ -1322,8 +1322,9 @@ namespace MinecraftClient.Protocol.Handlers
                     chunkBatchStartTime = GetNanos();
                     break;
                 case PacketTypesIn.StartConfiguration:
-                    SetCurrentState(CurrentState.Configuration);
+                    // Acknowledge while still in play, then switch, like vanilla
                     SendAcknowledgeConfiguration();
+                    SetCurrentState(CurrentState.Configuration);
                     break;
                 case PacketTypesIn.HideMessage:
                     var hideMessageSignature = dataTypes.ReadNextByteArray(packetData);
@@ -4235,6 +4236,10 @@ namespace MinecraftClient.Protocol.Handlers
         /// <param name="packetData">packet Data</param>
         private void SendPacket(PacketTypesOut packet, IEnumerable<byte> packetData)
         {
+            // Play packets are invalid during (re)configuration; servers and proxies drop the connection on them.
+            if (currentState == CurrentState.Configuration)
+                return;
+
             SendPacket(packetPalette.GetOutgoingIdByType(packet), packetData, packet.ToString());
         }
 
