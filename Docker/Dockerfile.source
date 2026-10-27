@@ -1,0 +1,14 @@
+# Builds MCC from this repository's source (Dockerfile instead downloads an upstream release).
+# Build from the repository root: docker build -f Docker/Dockerfile.source -t minecraft-console-client .
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY . .
+RUN dotnet publish MinecraftClient/MinecraftClient.csproj -f net10.0 -r linux-x64 -c Release -o /out \
+    --self-contained=true -p:UseAppHost=true -p:PublishSingleFile=true \
+    -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=Embedded
+
+FROM mcr.microsoft.com/dotnet/runtime-deps:10.0
+COPY --from=build /out/MinecraftClient /opt/mcc/MinecraftClient
+# MinecraftClient.ini and other runtime files live here; mount a volume to keep them
+WORKDIR /opt/data
+ENTRYPOINT ["/opt/mcc/MinecraftClient"]

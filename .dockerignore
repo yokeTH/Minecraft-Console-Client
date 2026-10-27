@@ -1,0 +1,8 @@
+.git
+.jj
+.idea
+.vs
+**/bin
+**/obj
+MinecraftOfficial
+docs/node_modules
